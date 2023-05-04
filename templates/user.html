@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<h1>{{user.first_name}} {{user.last_name}}</h1>
+{% if session['user_id'] == user.username %}
+<form action="/users/{{user.username}}/delete" method="POST">
+  <button>Delete account</button>
+</form>
+{% endif %}
+<p>Username: {{user.username}}</p>
+<p>Email: {{user.email}}</p>
+<h2>{{user.first_name}}'s feedback</h2>
+{% if session['user_id'] == user.username %}
+<a href="/users/{{user.username}}/feedback/add"><button>Add feedback</button></a>
+{% endif %}
+<table>
+  {% if user.feedback %}
+  <tr>
+    <th>Title</th>
+    <th>Content</th>
+  </tr>
+  {% endif %}
+  {% for feedback in user.feedback %}
+
+  <tr>
+    <td>{{feedback.title}}</td>
+    <td>{{feedback.content }}</td>
+    {% if session['user_id'] == user.username %}
+    <td><a href="/feedback/{{feedback.id}}/update"><button>Edit</button></a></td>
+    <td>
+      <form action="/feedback/{{feedback.id}}/delete" method="POST">
+        <button>Delete</button>
+      </form>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+
+</table>
+
+
+
+{% endblock %}

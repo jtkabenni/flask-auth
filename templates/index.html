@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+
+<body>
+  <nav>
+    <a href="/">Home</a>
+    {% if session['user_id'] %}
+    <a href="/logout">Logout</a>
+    <a href="/users/{{session['user_id']}}">Profile</a>
+    {% else %}
+    <a href="/register">Register</a>
+    <a href="/login">Login</a>
+
+    {% endif %}
+  </nav>
+
+
+  {% for msg in get_flashed_messages() %}
+  <div class="flash-msg">{{ msg }}</div>
+  {% endfor %}
+  {% block content %}
+  {% if session['user_id'] %}
+  <h1>Hi {{session['user_id']}} !! </h1>
+  {% endif %}
+  <h2>Users</h2>
+  <ul>
+    {% for user in users %}
+    <li><a href="/users/{{user.username}}">{{ user.username }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endblock %}
+</body>
+
+</html>
